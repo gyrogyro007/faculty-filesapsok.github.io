@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSPDC Faculty - APSOK</title>
+    <style>
+        /* =========================================
+           RESET & VARIABLES
+           ========================================= */
+        :root {
+            --main-bg-color: #0d0a12;
+            --card-bg-color: #1a1621;
+            --primary-color: #ff213c;
+            --primary-hover: #d41c32;
+            --text-color: #ffffff;
+            --text-muted: #b3b3b3;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --nav-height: 70px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--main-bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--primary-hover);
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* =========================================
+           NAVIGATION
+           ========================================= */
+        header {
+            background-color: rgba(13, 10, 18, 0.95);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .logo-area img {
+            height: 40px;
+            width: auto;
+            border-radius: 50%;
+        }
+
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            font-weight: 600;
+            padding: 10px;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* =========================================
+           LAYOUT & SECTIONS
+           ========================================= */
+        main {
+            margin-top: var(--nav-height);
+            min-height: calc(100vh - var(--nav-height) - 100px); /* adjust for footer */
+        }
+
+        .page-section {
+            display: none; /* Hidden by default for SPA feel */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* =========================================
+           HERO SECTION (HOME)
+           ========================================= */
+        .hero {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+
+        .hero-caption {
+            position: absolute;
+            bottom: 20%;
+            left: 5%;
+            background: rgba(13, 10, 18, 0.85);
+            border-left: 5px solid var(--primary-color);
+            padding: 30px;
+            max-width: 600px;
+            backdrop-filter: blur(5px);
+        }
+
+        .hero-caption h1 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .hero-caption p {
+            font-size: 1.1rem;
+        }
+
+        /* =========================================
+           FACULTY GRID (HOME)
+           ========================================= */
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin: 50px 0 30px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding-bottom: 50px;
+        }
+
+        .faculty-card {
+            background-color: var(--card-bg-color);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #333;
+        }
+
+        .faculty-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(255, 33, 60, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .faculty-card:hover .card-image img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .card-content p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .btn-profile {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: auto;
+        }
+
+        .btn-profile:hover {
+            background-color: var(--primary-hover);
+            color: white;
+        }
+
+        /* =========================================
+           PROFILE PAGES (INDIVIDUAL)
+           ========================================= */
+        .profile-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 50px;
+            align-items: flex-start;
+        }
+
+        .profile-image-section {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid var(--primary-color);
+        }
+
+        .profile-details {
+            flex: 2;
+            min-width: 300px;
+            background-color: var(--card-bg-color);
+            padding: 40px;
+            border-radius: 10px;
+        }
+
+        .profile-details h1 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .profile-details h3 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+
+        .profile-details p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #ddd;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .highlight-text {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+        footer {
+            background-color: #000;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            border-top: 1px solid #333;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: var(--nav-height);
+                left: 0;
+                width: 100%;
+                background-color: #0d0a12;
+                padding: 20px;
+                border-bottom: 2px solid var(--primary-color);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .hero-caption {
+                width: 90%;
+                bottom: 50px;
+            }
+
+            .hero-caption h1 {
+                font-size: 2rem;
+            }
+
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .profile-image-section, .profile-details {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo-area" onclick="navigateTo('home')">
+            <!-- Ensure PNGLOGO.png is in IMAGES folder -->
+            <img src="pnglogo.png" alt="TSPDC Logo" onerror="this.style.display='none'">
+            <div class="brand-name">FACULTY FILES</div>
+        </div>
+        <div class="mobile-toggle" onclick="toggleMenu()">☰</div>
+        <nav>
+            <ul id="nav-links">
+                <li><a href="#home" onclick="navigateTo('home')">Home</a></li>
+                <li><a href="#ashok" onclick="navigateTo('ashok')">Ashok Sir</a></li>
+                <li><a href="#anupam" onclick="navigateTo('anupam')">Anupam Sir</a></li>
+                <li><a href="#aditi" onclick="navigateTo('aditi')">Aditi Ma'am</a></li>
+                <li><a href="#aman" onclick="navigateTo('aman')">Aman Sir</a></li>
+                <li><a href="#saummya" onclick="navigateTo('saummya')">Saummya Ma'am</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+
+        <!-- =========================
+             HOME SECTION
+             ========================= -->
+        <section id="home" class="page-section active">
+            <div class="hero">
+                <img src="roll.jpeg" alt="Hero Banner" onerror="this.src='https://placehold.co/1200x600/120000/FFF?text=TSPDC+Banner'">
+                <div class="hero-caption">
+                    <h1>TSPDC Faculty</h1>
+                    <p>Our college, home to the APSOK team and the only place where we get to meet our dear faculty members.</p>
+                </div>
+            </div>
+
+            <div class="container">
+                <h1 class="section-title">Meet The Team</h1>
+                <div class="faculty-grid">
+                    
+                    <!-- Ashok Card -->
+                    <article class="faculty-card">
+                        <div class="card-image">
+                            <img src="ashok.jpg" alt="Ashok Rathore" onerror="this.src='https://placehold.co/400x500/120000/FFF?text=Ashok+Sir'">
+                        </div>
+                        <div class="card-content">
+                            <h2>Ashok Rathore</h2>
+                            <p>Ashok sir is extremely well versed in Python as well as being swagged out. The tech wizard of the campus.</p>
+                            <a href="#ashok" onclick="navigateTo('ashok')" class="btn-profile">View Profile</a>
+                        </div>
+                    </article>
+
+                    <!-- Anupam Card -->
+                    <article class="faculty-card">
+                        <div class="card-image">
+                            <img src="anupam.jpg" alt="Anupam Nigam" onerror="this.src='https://placehold.co/400x500/120000/FFF?text=Anupam+Sir'">
+                        </div>
+                        <div class="card-content">
+                            <h2>Anupam Nigam</h2>
+                            <p>Anupam sir has a strict, straightforward yet cute approach to maths. "A idhar sunno!"</p>
+                            <a href="#anupam" onclick="navigateTo('anupam')" class="btn-profile">View Profile</a>
+                        </div>
+                    </article>
+
+                    <!-- Aditi Card -->
+                    <article class="faculty-card">
+                        <div class="card-image">
+                            <img src="aditi.jpg" alt="Aditi Shinde" onerror="this.src='https://placehold.co/400x500/120000/FFF?text=Aditi+Maam'">
+                        </div>
+                        <div class="card-content">
+                            <h2>Aditi Shinde</h2>
+                            <p>Aditi Ma'am holds a special place in all our hearts and that's universally agreed.</p>
+                            <a href="#aditi" onclick="navigateTo('aditi')" class="btn-profile">View Profile</a>
+                        </div>
+                    </article>
+
+                    <!-- Aman Card -->
+                    <article class="faculty-card">
+                        <div class="card-image">
+                            <img src="aman.jpg" alt="Aman Vishwakarma" onerror="this.src='https://placehold.co/400x500/120000/FFF?text=Aman+Sir'">
+                        </div>
+                        <div class="card-content">
+                            <h2>Aman Vishwakarma</h2>
+                            <p>The man behind the scenes. Fingers crossed he likes this project!</p>
+                            <a href="#aman" onclick="navigateTo('aman')" class="btn-profile">View Profile</a>
+                        </div>
+                    </article>
+
+                    <!-- Saummya Card -->
+                    <article class="faculty-card">
+                        <div class="card-image">
+                            <img src="saummya.JPG" alt="Saummya Rai" onerror="this.src='https://placehold.co/400x500/120000/FFF?text=Saummya+Maam'">
+                        </div>
+                        <div class="card-content">
+                            <h2>Saummya Rai</h2>
+                            <p>Sweet, Smart and Articulate. Our Indian Knowledge System (IKS) teacher.</p>
+                            <a href="#saummya" onclick="navigateTo('saummya')" class="btn-profile">View Profile</a>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             ANUPAM PROFILE SECTION
+             ========================= -->
+        <section id="anupam" class="page-section">
+            <div class="container">
+                <div class="back-btn" onclick="navigateTo('home')">← Back to Faculty List</div>
+                <div class="profile-container">
+                    <div class="profile-image-section">
+                        <img src="anupam1.jpg" alt="Anupam Nigam" onerror="this.src='https://placehold.co/600x800/120000/FFF?text=Anupam+Sir'">
+                    </div>
+                    <div class="profile-details">
+                        <h1>Anupam Nigam</h1>
+                        <h3>Discrete Mathematics</h3>
+                        
+                        <p><strong>"A IDHAR SUNNO"</strong></p>
+                        <p>Ye hai humare Maths wale sir Anupam Nigam — Thakur Specialized Degree College ke Assistant Professor. Qualification: M.Sc. Mathematics. Subject? Obviously maths… plus Excel practical, kyunki sir sirf numbers nahi, cells bhi control karte hain 📊</p>
+                        
+                        <p>Sir ka teaching style bilkul professional, language mainly Hindi, aur knowledge? Matlab Google bhi thoda insecure ho jaaye. Discipline sir ke DNA mein hai, lekin fun bhi full-on included. Friendly bhi, helpful bhi, aur strict bhi—par ekdum funny strict type 😌</p>
+                        
+                        <p>Class mein sir ka legendary catchphrase sunte hi silence aa jaata hai: <br>
+                        <span class="highlight-text">“A idhar sunno!”</span></p>
+                        
+                        <p>Aur agar koi zyada hero bana, toh direct attack: <br>
+                        <span class="highlight-text">“A tumhara roll no. kya hai, bolo zara?”</span></p>
+                        
+                        <p>Kabhi-kabhi punishment bhi creative hoti hai: "A class ke bahar jao, canteen mein dekh ke aao." Matlab bahar jaane ka order bhi itna polite ki student confuse ho jaaye—punishment hai ya vacation?</p>
+                        
+                        <p>Overall, Anupam Nigam sir ek aise teacher hain jo maths ko samjhaate bhi hain, yaad bhi rehte hain, aur class ko bore hone ka mauka hi nahi dete. Truly disciplined, genuinely funny, aur honestly—ekdum iconic teacher 🎬</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             SAUMMYA PROFILE SECTION
+             ========================= -->
+        <section id="saummya" class="page-section">
+            <div class="container">
+                <div class="back-btn" onclick="navigateTo('home')">← Back to Faculty List</div>
+                <div class="profile-container">
+                    <div class="profile-image-section">
+                        <img src="saummya1.JPG" alt="Saummya Rai" onerror="this.src='https://placehold.co/600x800/120000/FFF?text=Saummya+Maam'">
+                    </div>
+                    <div class="profile-details">
+                        <h1>Saummya Rai</h1>
+                        <h3>Professor - Indian Knowledge System (IKS)</h3>
+                        
+                        <p>Saumya Ma’am’s presence brings a sense of warmth and calm wherever she goes. The moment she begins speaking, the classroom feels safe, welcoming, and full of positivity. She doesn’t just teach students—she nurtures them, treating every student like her own <em>baccha</em>.</p>
+                        
+                        <p>Known for her caring and supportive nature, Saumya Ma’am is always there for her students. Even if someone asks for the smallest help, she stands by them through the entire process with patience and dedication. Her words like <span class="highlight-text">“beta,” “baccha,” and “sona”</span> are not just expressions—they reflect her genuine affection and motherly concern.</p>
+                        
+                        <p>She teaches Indian Knowledge System with deep passion and remarkable clarity. Her vast understanding of India’s diverse cultures, traditions, and history makes every lecture engaging and meaningful. Listening to her feels like traveling through India’s rich heritage, guided by someone who truly values and understands it.</p>
+                        
+                        <p>Beyond her knowledge, Saumya Ma’am’s personality leaves a lasting impression. She is extremely talented, graceful, and carries herself with elegance. Her appearance, like her teaching, speaks of dignity and depth.</p>
+                        
+                        <p>Saumya Ma’am is a rare combination of knowledge, kindness, culture, and care. A mentor who teaches from books, history, and most importantly—from the heart. 🌸</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             ASHOK PROFILE SECTION
+             ========================= -->
+        <section id="ashok" class="page-section">
+            <div class="container">
+                <div class="back-btn" onclick="navigateTo('home')">← Back to Faculty List</div>
+                <div class="profile-container">
+                    <div class="profile-image-section">
+                        <img src="ashok1.jpg" alt="Ashok Rathore" onerror="this.src='https://placehold.co/600x800/120000/FFF?text=Ashok+Sir'">
+                    </div>
+                    <div class="profile-details">
+                        <h1>Ashok Rathore</h1>
+                        <h3>Python Programming</h3>
+                        
+                        <p><strong>The Python Expert</strong></p>
+                        <p>So, this is all about Ashok sir!</p> <br>
+<p> The moment he enters to the classroom, the environment changes automatically. He's so and so chill just like 'thanda-thanda Sprite'.
+He teaches Python programming language and he's damn good at that.</p>
+<p> He takes just seconds to solve problems! His command over coding is unmatched.</p> <br>
+<p> Ashok sir is even famous for his dialogues like "Kya gunda banega re tu" and "Beta, Lagta hai mera khauf khtam ho raha hai!"
+And this is reason that unka yeh cool khauf sabme bana rehta hai. but, Behind the humor lies a deeply respectful, kind, and supportive personality. 
+well, I've to say that His classes are not just about programming—they are about experience, engagement, and imagination.
+And Ashok sir truly makes Python memorable. 🐍💻.</p>
+                        
+                        <p>Known for his distinct "swag" and approachable demeanor, Ashok sir bridges the gap between students and complex technology. Whether it's debugging a stubborn error or explaining algorithms, he does it with patience and flair.</p>
+                        
+                        <p>His classes are more than just lectures; they are interactive sessions where logic meets creativity. He encourages students to think outside the box (or the terminal window) and solve problems efficiently.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             ADITI PROFILE SECTION
+             ========================= -->
+        <section id="aditi" class="page-section">
+            <div class="container">
+                <div class="back-btn" onclick="navigateTo('home')">← Back to Faculty List</div>
+                <div class="profile-container">
+                    <div class="profile-image-section">
+                        <img src="aditi1.jpg" alt="Aditi Shinde" onerror="this.src='https://placehold.co/600x800/120000/FFF?text=Aditi+Maam'">
+                    </div>
+                    <div class="profile-details">
+                        <h1>Aditi Shinde</h1>
+                        <h3>Psychology</h3>
+                        
+                        <p><strong>The Heart of the Department</strong></p>
+                        <p>Aditi Ma'am is more than just a teacher—she's a mentor who creates a safe, welcoming space where every student feels valued. Her teaching philosophy goes beyond textbooks; it focuses on shaping well-rounded individuals with the right mindset. As a Psychology of Adjustment teacher, Aditi Ma'am excels in creating an atmosphere of trust, understanding, and personal growth. This subject, which deals with how we adapt to life’s challenges, aligns perfectly with her approach to teaching, as she not only teaches the academic material but also helps her students navigate their own life adjustments.</p>
+
+<p> Her ability to simplify complex psychological concepts into everyday language makes even the hardest topics feel approachable. Whether it's understanding stress management, dealing with emotional challenges, or learning how to build resilience, Aditi Ma'am provides both the knowledge and the emotional support necessary to succeed.</p> <br>
+
+<p> Her trademark phrase, <span class="highlight-text">"Toh guyssss..." </span> isn’t just a quirky catchphrase; it’s a signal that something meaningful is about to be shared—something that will change the way you think. </p> <br>
+<p> It shows how she effortlessly blends humor and wisdom, making the classroom feel less like a formal space and more like a conversation with a trusted friend. 
+It's this unique balance of professionalism and personal connection that makes Aditi Ma'am so beloved.
+Aditi Ma'am doesn’t just teach lessons—she teaches life skills that help her students adjust and thrive in the ever-changing world around them. In a world where many teachers may be just about the subject matter, Aditi Ma’am excels in making her students feel seen, heard, and empowered.
+</p>                        
+                        <p>Always approachable and ever-smiling, she ensures that no student feels left behind.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             AMAN PROFILE SECTION
+             ========================= -->
+        <section id="aman" class="page-section">
+            <div class="container">
+                <div class="back-btn" onclick="navigateTo('home')">← Back to Faculty List</div>
+                <div class="profile-container">
+                    <div class="profile-image-section">
+                        <img src="aman1.jpg" alt="Aman Vishwakarma" onerror="this.src='https://placehold.co/600x800/120000/FFF?text=Aman+Sir'">
+                    </div>
+                    <div class="profile-details">
+                        <h1>Aman Vishwakarma</h1>
+                        <h3>Web Technology</h3>
+                        
+                        <p><strong>"AY KANYE!"</strong></p>
+                        <p>"I hope he likes this project, fingers crossed."</p>
+                        
+                        <p> <span class="highlight-text"> "Ay takle!" </span> – a phrase that might sound provocative at first, but anyone who knows Aman Sir understands it’s a playful expression of warmth and affection. His style of communication is one of casual honesty, making students feel comfortable while also keeping things lighthearted. Behind this seemingly cheeky remark lies a deep respect for his students, and it’s just one of the many ways he connects with them on a personal level. </p> <br>
+
+<p> Aman Sir’s approach to teaching Web Technology is refreshing and free-flowing. Unlike the rigid, textbook-based methods, he focuses on practical skills and real-world application. For him, it’s not about memorizing concepts; it’s about understanding how they work in the real world and how students can use them to solve actual problems. His classes feel less like traditional lectures and more like collaborative learning experiences where students are encouraged to explore, experiment, and get hands-on with the technology. </p> <br>
+
+<p>What sets him apart is his emphasis on **skills over theory**. He knows that in today’s tech-driven world, it's not just the theoretical knowledge that matters, but the ability to implement and adapt those concepts in various contexts. Whether it's coding, designing websites, or troubleshooting, Aman Sir makes sure his students gain the tools and confidence they need to succeed outside the classroom. <br>
+
+In essence, Aman Sir is a teacher who makes learning feel natural, engaging, and relevant, and his students leave his classes not just with knowledge, but with the ability to apply that knowledge in meaningful ways. </p>
+</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 APSOK. Developed by APSOK SOLUTIONS</p>
+        <p>Wiki: <a href="https://tspdcmumbai.in/" target="_blank">https://tspdcmumbai.in/</a></p>
+    </footer>
+
+    <script>
+        // =========================================
+        // JAVASCRIPT LOGIC
+        // =========================================
+        
+        // 1. Mobile Navigation Toggle
+        function toggleMenu() {
+            const nav = document.getElementById('nav-links');
+            nav.classList.toggle('show');
+        }
+
+        // 2. Navigation Router (Single Page Logic)
+        function navigateTo(pageId) {
+            // Prevent default anchor jump behavior slightly for smooth transition
+            
+            // Hide all sections
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show target section
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.classList.add('active');
+                
+                // Close mobile menu if open
+                const nav = document.getElementById('nav-links');
+                nav.classList.remove('show');
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // 3. Handle Browser Back/Forward Buttons
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1); // remove #
+            if (hash) {
+                navigateTo(hash);
+            } else {
+                navigateTo('home');
+            }
+        });
+
+        // 4. Initial Load
+        document.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                navigateTo(hash);
+            } else {
+                navigateTo('home');
+            }
+        });
+    </script>
+</body>
+</html>
